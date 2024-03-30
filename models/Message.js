@@ -13,6 +13,7 @@ const MessageSchema = new mongoose.Schema({
 	},
 	totalTokens: {
 		type: Number,
+		default: 0,
 		required: true,
 	},
 	timestamp: {

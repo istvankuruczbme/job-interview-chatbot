@@ -6,13 +6,13 @@ const UserSchema = new mongoose.Schema(
 		firebase: {
 			id: {
 				type: String,
-				default: "",
+				immutable: true,
+				required: true,
 			},
 		},
 		stripe: {
 			id: {
 				type: String,
-				default: "",
 			},
 			subscriptionEnd: Date,
 		},
