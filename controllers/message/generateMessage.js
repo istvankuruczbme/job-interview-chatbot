@@ -1,26 +1,69 @@
-import { openai } from "../../server.js";
+import { fastify, openai } from "../../server.js";
+import checkValidChatId from "../../utils/checkValidChatId.js";
+
+function createPromptText(prompt) {
+	let promptText = "";
+	if (prompt.type === "PROFESSIONAL_QUESTION") {
+		// Replace the placholders with the actual values
+		promptText = fastify.config.CHAT_GPT_USER_PROMPT_TEMPLATE.replace("<LEVEL>", prompt.level);
+		promptText = promptText.replace("<POSITION>", prompt.position);
+	} else if (prompt.type === "GENERAL_QUESTION") {
+		promptText = prompt.content;
+	}
+
+	return promptText;
+}
 
 // Function that generates a message based on the user's prompt with ChatGPT
-export default async function generateMessage(req, reply) {
+export default async function generateMessage(req, reply, done) {
 	// Extract the prompt from the request body
-	const { prompt } = req.body;
+	const { prompt, timestamp, chatId } = req.body;
 
-	// Check if the prompt is provided
-	if (!prompt) {
-		console.log("Prompt not provided");
+	// Check if the chatId is provided
+	if (!chatId) {
+		console.log("Chat ID not provided.");
 		return null;
 	}
 
+	// Check if the chatId is valid
+	const validId = checkValidChatId(chatId);
+	if (!validId) {
+		console.log("Invalid chat ID.");
+		return null;
+	}
+
+	// Create the prompt text
+	const promptText = createPromptText(prompt);
+
 	try {
+		// Generate the completion from the OpenAI API
 		const completion = await openai.chat.completions.create({
 			messages: [
-				{ role: "system", content: "You are a chatbot who helpes to prepare for job interviews." },
-				{ role: "user", content: prompt },
+				{ role: "system", content: fastify.config.CHAT_GPT_SYSTEM_PROMPT },
+				{ role: "user", content: promptText },
 			],
 			model: "gpt-3.5-turbo-0125",
 		});
 
-		return completion.choices;
+		// Create the structure for the messages and add them to the request
+		req.messages = [
+			{
+				role: "user",
+				content: promptText,
+				timestamp,
+				tokens: completion.usage.prompt_tokens,
+				chatId,
+			},
+			{
+				role: "assistant",
+				content: completion.choices[0].message.content,
+				timestamp: new Date(),
+				tokens: completion.usage.completion_tokens,
+				chatId,
+			},
+		];
+
+		done();
 	} catch (e) {
 		console.log("Error getting the answer from OpenAI API: ", e);
 		return null;

@@ -10,8 +10,16 @@ const envOptions = {
 			OPENAI_API_KEY: { type: "string" },
 			MONGO_URI: { type: "string" },
 			CLIENT_URL: { type: "string" },
+			CHAT_GPT_SYSTEM_PROMPT: { type: "string" },
+			CHAT_GPT_USER_PROMPT_TEMPLATE: { type: "string" },
 		},
-		required: ["OPENAI_API_KEY", "MONGO_URI", "CLIENT_URL"],
+		required: [
+			"OPENAI_API_KEY",
+			"MONGO_URI",
+			"CLIENT_URL",
+			"CHAT_GPT_SYSTEM_PROMPT",
+			"CHAT_GPT_USER_PROMPT_TEMPLATE",
+		],
 	},
 	dotenv: true,
 };

@@ -42,4 +42,4 @@ try {
 	process.exit(1);
 }
 
-export { openai };
+export { fastify, openai };

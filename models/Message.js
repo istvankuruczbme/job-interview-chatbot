@@ -11,7 +11,7 @@ const MessageSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	totalTokens: {
+	tokens: {
 		type: Number,
 		default: 0,
 		required: true,

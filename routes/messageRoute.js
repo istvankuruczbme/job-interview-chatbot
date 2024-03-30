@@ -8,14 +8,12 @@ export default function messageRoute(fastify, _, done) {
 	// Delete a message
 	fastify.delete("/:messageId", deleteMessage);
 
-	// Generate a message with ChatGPT
-	fastify.post("/generate", generateMessage);
-
 	// Get the messages of the chat
 	fastify.get("/", getChatMessages);
 
 	// Create new message
-	fastify.post("/", addMessage);
+	// fastify.post("/", addMessage);
+	fastify.post("/", { preHandler: generateMessage }, addMessage);
 
 	done();
 }
