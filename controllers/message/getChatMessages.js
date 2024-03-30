@@ -2,12 +2,9 @@ import Message from "../../models/Message.js";
 import checkValidChatId from "../../utils/checkValidChatId.js";
 
 // Function to get all messages in a chat
-export default async function getChatMessages(req, reply, done) {
-	// Get the endpoint
-	const endpoint = req.raw.url;
-
+export default async function getChatMessages(req, reply) {
 	// Get the chatId from the request query
-	const { chatId } = endpoint.includes("/messages") ? req.query : req.params;
+	const { chatId } = req.query;
 
 	// Check if there is a chatId in the request
 	if (!chatId) {
@@ -25,12 +22,7 @@ export default async function getChatMessages(req, reply, done) {
 	// Find the messages with the given chatId
 	try {
 		const messages = await Message.find({ chatId });
-
-		if (endpoint.includes("/messages")) return messages;
-		else {
-			req.messages = messages;
-			done();
-		}
+		return messages;
 	} catch (e) {
 		console.log("Error finding messages:\n", e);
 		return null;

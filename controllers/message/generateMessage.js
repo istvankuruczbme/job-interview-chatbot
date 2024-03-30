@@ -1,3 +1,4 @@
+import Chat from "../../models/Chat.js";
 import { fastify, openai } from "../../server.js";
 import checkValidChatId from "../../utils/checkValidChatId.js";
 
@@ -25,17 +26,18 @@ export default async function generateMessage(req, reply, done) {
 		return null;
 	}
 
-	// Check if the chatId is valid
-	const validId = checkValidChatId(chatId);
-	if (!validId) {
-		console.log("Invalid chat ID.");
-		return null;
-	}
-
-	// Create the prompt text
-	const promptText = createPromptText(prompt);
-
 	try {
+		// Get the chat from the DB
+		const chat = await Chat.findById(chatId);
+		if (!chat) {
+			console.log("Chat not found.");
+			return null;
+		}
+
+		// Create the prompt text
+		prompt.position = chat.position;
+		const promptText = createPromptText(prompt);
+
 		// Generate the completion from the OpenAI API
 		const completion = await openai.chat.completions.create({
 			messages: [

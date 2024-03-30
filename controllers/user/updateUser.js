@@ -5,8 +5,6 @@ export default async function updateUser(req, reply) {
 	// Extract userId from the request parameters
 	const { userId } = req.params;
 
-	console.log(req.body);
-
 	// Check if userId is provided
 	if (!userId) {
 		console.log("User ID is not provided");

@@ -29,11 +29,6 @@ await fastify.register(messageRoute, {
 	prefix: "/messages",
 });
 
-// Test route
-// fastify.get("/", async (req, reply) => {
-// 	return { hello: "world" };
-// });
-
 // Start the server
 try {
 	await fastify.listen({ port: 3000 });
