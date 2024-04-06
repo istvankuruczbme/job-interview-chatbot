@@ -50,7 +50,7 @@ export default async function generateMessage(req, reply, done) {
 			req.messages = [
 				{
 					role: "user",
-					content: prompt.type === "PROFESSIONAL_QUESTION" ? promptText.split("\n")[0] : promptText,
+					content: prompt.type === "PROFESSIONAL_QUESTION" ? promptText.split(" Structure")[0] : promptText,
 					timestamp,
 					tokens: completion.usage.prompt_tokens,
 					chatId,
@@ -82,7 +82,7 @@ export default async function generateMessage(req, reply, done) {
 			];
 		}
 	} catch (e) {
-		console.log("Error getting the answer from OpenAI API: ", e);
+		console.log("Error getting the answer from OpenAI API:\n", e);
 		return null;
 	}
 }
