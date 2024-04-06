@@ -20,6 +20,13 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		photoUrl: {
+			type: String,
+		},
+		email: {
+			type: String,
+			required: true,
+		},
 	},
 	{
 		timestamps: true,

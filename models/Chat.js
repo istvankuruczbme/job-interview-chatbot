@@ -5,6 +5,8 @@ const ChatSchema = new mongoose.Schema(
 	{
 		position: {
 			type: String,
+			lowercase: true,
+			trim: true,
 			required: true,
 		},
 		userId: {

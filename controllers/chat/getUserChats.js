@@ -21,7 +21,7 @@ export default async function getUserChats(req, reply) {
 
 	try {
 		// Find all chats for the user
-		const chats = await Chat.find({ userId });
+		const chats = await Chat.find({ userId }).sort({ createdAt: "desc" });
 		return chats;
 	} catch (e) {
 		console.log("Error getting chats:\n", e);

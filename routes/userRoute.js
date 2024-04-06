@@ -41,11 +41,13 @@ const userSchema = {
 			required: ["id"],
 		},
 		name: { type: "string" },
+		photoUrl: { type: "string" },
+		email: { type: "string" },
 		createdAt: { type: "string" },
 		updatedAt: { type: "string" },
 		__v: { type: "number" },
 	},
-	required: ["_id", "firebase", "name", "createdAt", "updatedAt"],
+	required: ["_id", "firebase", "name", "email", "createdAt", "updatedAt"],
 };
 
 const getUserSchema = {
@@ -108,6 +110,8 @@ const addUserSchema = {
 				},
 			},
 			name: { type: "string" },
+			photoUrl: { type: "string" },
+			email: { type: "string" },
 		},
 		required: ["firebase", "name"],
 	},

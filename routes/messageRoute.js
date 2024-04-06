@@ -50,6 +50,7 @@ const getChatMessagesSchema = {
 		type: "object",
 		properties: {
 			chatId: { type: "string" },
+			limit: { type: "number" },
 		},
 		required: ["chatId"],
 	},
@@ -77,7 +78,7 @@ const addMessageSchema = {
 			timestamp: { type: "string" },
 			chatId: { type: "string" },
 		},
-		required: ["prompt", "chatId"],
+		required: ["chatId"],
 	},
 	response: {
 		default: {
